@@ -1,0 +1,95 @@
+.cryptoTableContainer {
+  .table {
+    border-collapse: collapse;
+    border-spacing: 0px;
+    width: 100%;
+    .tableHeader {
+      top: 0;
+      width: 100%;
+      border-top: solid #ced3d8 0.5px;
+      border-bottom: solid #ced3d8 0.5px;
+      .tableHead {
+        text-align: end;
+        padding: 1rem 0.5rem;
+        font-family: "inter";
+      }
+      .alignStart {
+        text-align: start;
+      }
+    }
+    .tableRow {
+      padding: 1rem 0px;
+      border-bottom: solid #ced3d8 0.5px;
+      border-spacing: 0px;
+
+      .tableData {
+        text-align: end;
+        padding: 1.5rem 0.5rem;
+        font-weight: 500;
+        .risePercentage {
+          color: #ea3943;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          svg {
+            margin-right: 4px;
+          }
+        }
+        .dropPercentage {
+          color: #16c784;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          svg {
+            margin-right: 4px;
+          }
+        }
+        .progressContainer {
+          progress {
+            width: 80%;
+            height: 6px;
+            border: none;
+
+            &::-webkit-progress-bar {
+              border-radius: 1rem;
+              background: #eff2f5;
+            }
+            &::-webkit-progress-value {
+              border-radius: 1rem;
+              background: #cfd6e4;
+            }
+          }
+        }
+      }
+      .nameCell {
+        text-align: start;
+        display: flex;
+        align-items: center;
+        img {
+          margin-right: 0.5rem;
+          width: 18px;
+        }
+        span {
+          margin-left: 0.5rem;
+          color: #808a9d;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 476px) {
+  .cryptoTableContainer {
+    padding: 0rem 1rem;
+
+    .table {
+      .tableRow {
+        .tableData {
+          white-space: nowrap;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}

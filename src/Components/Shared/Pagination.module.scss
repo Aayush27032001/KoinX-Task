@@ -1,0 +1,33 @@
+.paginationList {
+  display: flex;
+
+  .paginationListItem {
+    font-family: "inter";
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid #dfe3e8;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-inline: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    svg {
+      stroke-width: 2px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .active {
+    color: #0052fe;
+    border: solid #0052fe 1px;
+  }
+
+  .disabled {
+    color: #c4cdd5;
+    background: #919eab;
+  }
+}

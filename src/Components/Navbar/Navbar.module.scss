@@ -1,0 +1,31 @@
+.navbarContainer {
+  height: 3.75rem;
+  width: 100%;
+  background-color: white;
+  border-bottom: solid #e5e5e5 1px;
+  .navSubContainer {
+    max-width: 86rem;
+    margin-inline: auto;
+    padding: 0rem 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .navLogo {
+      display: flex;
+      p {
+        font-size: 22px;
+        font-weight: 700;
+        margin-left: 5px;
+      }
+    }
+    .navActions {
+      display: flex;
+      align-items: center;
+      img:first-child {
+        margin-right: 1.4rem;
+      }
+    }
+  }
+}

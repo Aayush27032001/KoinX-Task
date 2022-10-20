@@ -1,0 +1,88 @@
+.popUpContainer {
+  background-color: white;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  margin: 2rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  .popupHeader {
+    margin: 0.5rem 0rem 1rem 0rem;
+    display: flex;
+    justify-content: space-between;
+    .coinName {
+      display: flex;
+      align-items: center;
+      img {
+        width: 30px;
+      }
+      p {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-left: 0.5rem;
+      }
+    }
+    .closeBtn {
+      background: transparent;
+      border: none;
+      display: flex;
+      svg {
+        font-size: 24px;
+        color: #aaaaaa;
+      }
+    }
+  }
+
+  .detailsColumn {
+    display: grid;
+    grid-template-columns: 2fr repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 8px;
+    margin-bottom: 1rem;
+    p {
+      margin-bottom: 0.5rem;
+    }
+    .risePercentage {
+      color: #ea3943;
+      display: flex;
+      align-items: center;
+      svg {
+        margin-right: 4px;
+      }
+    }
+    .dropPercentage {
+      color: #16c784;
+      display: flex;
+      align-items: center;
+      svg {
+        margin-right: 4px;
+      }
+    }
+  }
+  .popupEntry {
+    margin: 2rem 0rem;
+    p {
+      margin-bottom: 0.5rem;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .progressContainer {
+      progress {
+        width: 70%;
+        height: 6px;
+        border: none;
+
+        &::-webkit-progress-bar {
+          border-radius: 1rem;
+          background: #eff2f5;
+        }
+        &::-webkit-progress-value {
+          border-radius: 1rem;
+          background: #cfd6e4;
+        }
+      }
+    }
+  }
+}

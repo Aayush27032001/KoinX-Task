@@ -1,0 +1,78 @@
+.cryptoInfoContainer {
+  .infoSubContainer {
+    max-width: 86rem;
+    margin-inline: auto;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .optionContainer {
+      margin: 1rem 0rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .optionButtons {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        .option {
+          margin: 0 0.5rem;
+          background: #eff2f5;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          font-size: 13px;
+          font-weight: 500;
+          color: #5b667c;
+          &:first-child {
+            margin-left: 0;
+          }
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+
+        .active {
+          color: #3861fb;
+        }
+      }
+      .rowsOptionContainer {
+        font-size: 16px;
+        select {
+          border: none;
+          cursor: pointer;
+          outline: none;
+          background: #eff2f5;
+          border-radius: 8px;
+          padding: 0.625rem 0.75rem;
+          font-family: "inter";
+          font-size: 16px;
+          font-weight: 500;
+          margin-left: 1rem;
+        }
+      }
+    }
+    .paginationContainer {
+      margin: 1rem 0rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media only screen and (max-width: 476px) {
+  .cryptoInfoContainer {
+    .infoSubContainer {
+      h2 {
+        padding: 0rem 1rem;
+        margin: 1.5rem 0rem 2rem 0rem;
+        font-size: 1.8rem;
+      }
+      .optionContainer {
+        display: none;
+      }
+      .paginationContainer {
+        justify-content: center;
+      }
+    }
+  }
+}
