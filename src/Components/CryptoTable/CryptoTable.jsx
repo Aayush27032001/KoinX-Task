@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRowSelect, useTable } from "react-table";
 import { HiDotsVertical } from "react-icons/hi";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
@@ -195,8 +195,11 @@ const CryptoTable = ({ data }) => {
       hooks.visibleColumns.push((columns) => [
         {
           id: "selection",
-          Cell: () => {
+          Cell: ({row}) => {
             const [checked, setChecked] = useState(false);
+            useEffect(()=>{
+              setChecked(false);
+            },[row])
             return (
               <div>
                 <span
