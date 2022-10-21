@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useRowSelect, useTable } from "react-table";
 import { HiDotsVertical } from "react-icons/hi";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import styles from "./CryptoTable.module.scss";
 import useWindowSize from "../../hooks/useWindowSize";
 import ModalContainer from "../Shared/ModalContainer";
@@ -194,11 +195,25 @@ const CryptoTable = ({ data }) => {
       hooks.visibleColumns.push((columns) => [
         {
           id: "selection",
-          Cell: () => (
-            <div>
-              <input type="checkbox" />
-            </div>
-          ),
+          Cell: () => {
+            const [checked, setChecked] = useState(false);
+            return (
+              <div>
+                <span
+                  className={styles.favStar}
+                  onClick={() => {
+                    setChecked(!checked);
+                  }}
+                >
+                  {checked ? (
+                    <AiFillStar className={styles.filledStar} />
+                  ) : (
+                    <AiOutlineStar />
+                  )}
+                </span>
+              </div>
+            );
+          },
         },
         ...columns,
       ]);

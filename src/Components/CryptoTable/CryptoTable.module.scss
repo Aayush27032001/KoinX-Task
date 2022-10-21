@@ -26,6 +26,13 @@
         text-align: end;
         padding: 1.5rem 0.5rem;
         font-weight: 500;
+        .favStar {
+          font-size: 1.5rem;
+          color: #abb4c2;
+          .filledStar {
+            color: #f7d72c;
+          }
+        }
         .indexValues {
           color: #808a9d;
         }

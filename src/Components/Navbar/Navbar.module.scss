@@ -29,3 +29,31 @@
     }
   }
 }
+
+@media only screen and (max-width: 476px) {
+  .navbarContainer {
+    height: 5rem;
+    .navSubContainer {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      .navLogo {
+        p {
+          font-size: 1.5rem;
+          display: flex;
+          align-items: center;
+        }
+        img {
+          width: 1.7rem;
+        }
+      }
+      .navActions {
+        img:first-child {
+          display: none;
+        }
+        img:last-child {
+          margin-right: 1.75rem;
+        }
+      }
+    }
+  }
+}
