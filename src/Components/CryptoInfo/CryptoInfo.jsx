@@ -15,7 +15,10 @@ const CryptoInfo = () => {
     );
     const data = await response.json();
     if (response.ok) {
-      setCryptoData(data);
+      const temp = data.sort((a, b) => {
+        return a.market_cap_rank - b.market_cap_rank;
+      });
+      setCryptoData(temp);
     }
   };
 
