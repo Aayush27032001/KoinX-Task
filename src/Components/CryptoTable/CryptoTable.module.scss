@@ -26,6 +26,9 @@
         text-align: end;
         padding: 1.5rem 0.5rem;
         font-weight: 500;
+        .indexValues {
+          color: #808a9d;
+        }
         .risePercentage {
           color: #ea3943;
           display: flex;
@@ -87,7 +90,12 @@
       .tableRow {
         .tableData {
           white-space: nowrap;
-          font-size: 0.9rem;
+        }
+
+        .nameCell {
+          span {
+            margin-left: 0;
+          }
         }
       }
     }

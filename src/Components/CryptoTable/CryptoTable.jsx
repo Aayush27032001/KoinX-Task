@@ -16,7 +16,7 @@ const CryptoTable = ({ data }) => {
           Header: "#",
           accessor: "market_cap_rank",
           Cell: ({ value }) => {
-            return <p>{value}</p>;
+            return <p className={styles.indexValues}>{value}</p>;
           },
         },
         {
@@ -141,8 +141,10 @@ const CryptoTable = ({ data }) => {
                 }}
               >
                 <img src={row.original.image} alt={value} />
-                {value}
-                <span>{row.original.symbol}</span>
+                <div>
+                  <p>{value}</p>
+                  <span>{row.original.symbol}</span>
+                </div>
                 {showPopup && (
                   <ModalContainer>
                     <MobileInfoPopup
