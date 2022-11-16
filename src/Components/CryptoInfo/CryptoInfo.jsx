@@ -43,7 +43,6 @@ const CryptoInfo = () => {
   return (
     <div className={styles.cryptoInfoContainer}>
       <div className={styles.infoSubContainer}>
-        <h2>Top 100 Cryptocurrencies by Market Cap</h2>
         <div className={styles.optionContainer}>
           <div className={styles.optionButtons}>
             {tabs.map((ele) => {
