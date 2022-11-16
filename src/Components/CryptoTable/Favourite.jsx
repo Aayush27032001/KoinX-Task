@@ -1,13 +1,83 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { useRowSelect, useTable } from "react-table";
+import { BiLoader } from "react-icons/bi";
 import { HiDotsVertical } from "react-icons/hi";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import styles from "./CryptoTable.module.scss";
 import useWindowSize from "../../hooks/useWindowSize";
 import ModalContainer from "../Shared/ModalContainer";
 import MobileInfoPopup from "../Popups/MobileInfoPopup";
-const CryptoTable = ({ data }) => {
+import styles from "./Favourite.module.scss";
+
+const CustomRow = memo(({ coinId, isLast, setLoading, cols, isFirst, loading }) => {
+  const [data, setData] = useState();
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if(isFirst){
+        setLoading(true);
+      }
+      const resp = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${coinId}`
+      );
+      const data = await resp.json();
+      setData(data);
+      if (isLast) {
+        setLoading(false);
+      }
+    };
+    fetchDetails();
+  }, []);
+  if (loading&&isFirst) {
+    return (
+      <div className="loaderContainer">
+        <BiLoader />
+        Loading...
+      </div>
+    );
+  }
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <tr role="row" className={styles.tableRow}>
+      {cols.map((ele,i) => {
+        if (ele.accessor === "id") {
+          return <td key={i}></td>;
+        }
+        if (ele.accessor === "name" || ele.accessor === "market_cap_rank") {
+          return (
+            <td key={i} role="cell" className={styles.tableData}>
+              {ele.Cell({
+                value: data[ele.accessor],
+                row: { original: { image: data.image.small } },
+              })}
+            </td>
+          );
+        }
+        if (ele.accessor === "circulating_supply") {
+          return (
+            <td key={i}>
+              {ele.Cell({
+                value: data.market_data[`${ele.accessor}`],
+                row: {
+                  original: { max_supply: data.market_data.max_supply },
+                },
+              })}
+            </td>
+          );
+        }
+        return (
+          <td key={i} role="cell" className={styles.tableData}>
+            {ele.Cell({ value: data.market_data[`${ele.accessor}`].usd })}
+          </td>
+        );
+      })}
+    </tr>
+  );
+});
+
+const Favourite = ({ data }) => {
   const tData = useMemo(() => data, [data]);
   const size = useWindowSize();
   function getColumns() {
@@ -98,22 +168,11 @@ const CryptoTable = ({ data }) => {
           Cell: ({ value, row }) => {
             if (!value) return "Not Available";
             return (
-              <p>
+              <p style={{ textAlign: "end", paddingRight: "1rem" }}>
                 <div>{parseFloat(value.toFixed(2)).toLocaleString()} </div>
                 <div className={styles.progressContainer}>
                   <progress value={value} max={row.original.max_supply} />
                 </div>
-              </p>
-            );
-          },
-        },
-        {
-          Header: " ",
-          accessor: "id",
-          Cell: ({ value, row }) => {
-            return (
-              <p>
-                <HiDotsVertical />
               </p>
             );
           },
@@ -132,29 +191,15 @@ const CryptoTable = ({ data }) => {
           Header: "NAME",
           accessor: "name",
           Cell: ({ value, row }) => {
-            const [showPopup, setShowPopup] = useState(false);
             if (!value) return "Not Available";
             return (
-              <p
-                className={styles.nameCell}
-                onClick={() => {
-                  setShowPopup(true);
-                }}
-              >
+              <div className={styles.nameCell}>
                 <img src={row.original.image} alt={value} />
                 <div>
                   <p>{value}</p>
                   <span>{row.original.symbol}</span>
                 </div>
-                {showPopup && (
-                  <ModalContainer>
-                    <MobileInfoPopup
-                      data={row.original}
-                      onClose={setShowPopup}
-                    />
-                  </ModalContainer>
-                )}
-              </p>
+              </div>
             );
           },
         },
@@ -192,54 +237,14 @@ const CryptoTable = ({ data }) => {
     { columns: cols, data: tData },
     useRowSelect,
     (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        {
-          id: "selection",
-          Cell: ({row}) => {
-            const [checked, setChecked] = useState(false);
-            let map = new Map(JSON.parse(localStorage.getItem("favCoins") ?? JSON.stringify([])))
-            const markFav = () => {
-              let tempMap = new Map(JSON.parse(localStorage.getItem("favCoins") ?? JSON.stringify([])))
-              if(tempMap.has(row.original.id)){
-                tempMap.delete(row.original.id);
-              }else{
-                tempMap.set(row.original.id,row.original.market_cap_rank)
-              }
-              localStorage.favCoins = JSON.stringify(Array.from(tempMap.entries()));
-            }
-            useEffect(()=>{
-              if(map.has(row?.original?.id)){
-                setChecked(true);
-              }else{
-
-                setChecked(false);
-              }
-            },[row])
-            return (
-              <div>
-                <span
-                  className={styles.favStar}
-                  onClick={() => {
-                    setChecked(!checked);
-                    markFav()
-                  }}
-                >
-                  {checked ? (
-                    <AiFillStar className={styles.filledStar} />
-                  ) : (
-                    <AiOutlineStar />
-                  )}
-                </span>
-              </div>
-            );
-          },
-        },
-        ...columns,
-      ]);
+      hooks.visibleColumns.push((columns) => [...columns]);
     }
   );
+  const [loading, setLoading] = useState(true);
+  
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+  
   return (
     <div className={styles.cryptoTableContainer}>
       <table {...getTableProps()} className={styles.table}>
@@ -260,27 +265,25 @@ const CryptoTable = ({ data }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()} className={styles.tableBody}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} className={styles.tableRow}>
-                {row.cells?.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      className={`${styles.tableData}`}
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {JSON.parse(localStorage.favCoins ?? [])
+            .sort((a, b) => a[1] - b[1])
+            .map((row, i, rows) => {
+              return (
+                <CustomRow
+                  key={row[0]}
+                  coinId={row[0]}
+                  isLast={rows.length === i + 1 ? true : false}
+                  isFirst={i===0 ? true : false}
+                  setLoading={setLoading}
+                  cols={cols}
+                  loading={loading}
+                />
+              );
+            })}
         </tbody>
       </table>
     </div>
   );
 };
 
-export default CryptoTable;
+export default Favourite;

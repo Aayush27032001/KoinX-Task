@@ -8,7 +8,7 @@ function App() {
     <>
       <Navbar />
       <div className="App">
-        <SliderSection />
+        {/* <SliderSection /> */}
         <CryptoInfo />
       </div>
     </>

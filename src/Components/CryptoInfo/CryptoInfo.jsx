@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CryptoInfo.module.scss";
-import star from "../../assets/Star.svg";
+import { BsStar } from "react-icons/bs";
+import { BiLoader } from "react-icons/bi";
 import CryptoTable from "../CryptoTable/CryptoTable";
 import Pagination from "../Shared/Pagination";
+import Favourite from "../CryptoTable/Favourite";
 
 const CryptoInfo = () => {
   const [cryptoData, setCryptoData] = useState();
   const [rowsPerPage, setRowsPerRage] = useState(10);
   const [page, setPage] = useState(1);
+  const [activeTab, setActiveTab] = useState("CryptoCurrencies");
+  const tabs = ["Favourites", "CryptoCurrencies"];
+  const [loader, setLoader] = useState(true);
 
   const fetchData = async () => {
+    setLoader(true);
     const response = await fetch(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&amp;order=market_cap_desc&amp;per_page=${rowsPerPage}&amp;page=${page}&amp;sparkline=false&amp;price_change_percentage=24h%2C7d`
     );
@@ -19,29 +25,43 @@ const CryptoInfo = () => {
         return a.market_cap_rank - b.market_cap_rank;
       });
       setCryptoData(temp);
+      setLoader(false);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, [rowsPerPage, page]);
-
+  if (loader) {
+    return (
+      <div className="loaderContainer">
+        <BiLoader />
+        Loading...
+      </div>
+    );
+  }
   return (
     <div className={styles.cryptoInfoContainer}>
       <div className={styles.infoSubContainer}>
         <h2>Top 100 Cryptocurrencies by Market Cap</h2>
         <div className={styles.optionContainer}>
           <div className={styles.optionButtons}>
-            <span className={styles.option}>
-              <img src={star} alt="icon" /> Favourites
-            </span>
-            <span className={`${styles.option} ${styles.active}`}>
-              CryptoCurrencies
-            </span>
-            <span className={styles.option}>DeFi</span>
-            <span className={styles.option}>NFTs & Collectibles</span>
+            {tabs.map((ele) => {
+              return (
+                <span
+                  className={`${styles.option} ${
+                    ele === activeTab && styles.active
+                  }`}
+                  onClick={() => {
+                    setActiveTab(ele);
+                  }}
+                >
+                  {ele === "Favourites" && <BsStar />} {ele}
+                </span>
+              );
+            })}
           </div>
-          <div className={styles.rowsOptionContainer}>
+          {activeTab!=="Favourites" &&<div className={styles.rowsOptionContainer}>
             show rows
             <select
               name=""
@@ -55,17 +75,25 @@ const CryptoInfo = () => {
               <option value="25">25</option>
               <option value="50">50</option>
             </select>
-          </div>
+          </div>}
         </div>
-        <div>{cryptoData && <CryptoTable data={cryptoData} />}</div>
-        <div className={styles.paginationContainer}>
+        {cryptoData && (
+          <div>
+            {activeTab === "Favourites" ? (
+              <Favourite data={cryptoData} />
+            ) : (
+              <CryptoTable data={cryptoData} />
+            )}
+          </div>
+        )}
+        {activeTab!=="Favourites" && <div className={styles.paginationContainer}>
           <Pagination
             siblingCount={0}
             currentPage={page}
             totalCount={10}
             onPageChange={(page) => setPage(page)}
           />
-        </div>
+        </div>}
       </div>
     </div>
   );
