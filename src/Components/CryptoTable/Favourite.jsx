@@ -265,7 +265,7 @@ const Favourite = ({ data }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()} className={styles.tableBody}>
-          {JSON.parse(localStorage.favCoins ?? [])
+          {JSON.parse(localStorage.favCoins ?? JSON.stringify([]))
             .sort((a, b) => a[1] - b[1])
             .map((row, i, rows) => {
               return (
